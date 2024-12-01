@@ -4,8 +4,7 @@ import popup
 def on_press(key):
     try:
         if key == keyboard.Key.f7:
-            result = popup.pop_up()
-            print(f'Resultatul pop-up-ului: {result}')
+            popup.pop_up()
     except AttributeError:
         pass
 

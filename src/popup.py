@@ -3,6 +3,7 @@ import tkinter as tk
 from object import DataCollector
 import os
 import socket
+from web_config import send_data
 
 def pop_up():
     root = tk.Tk()
@@ -49,6 +50,9 @@ def pop_up():
 
     result = tk.StringVar()
 
+    status_label = tk.Label(top, bg="lightgray")
+    status_label.pack(pady=5)
+
     def on_ok():
         current_time = datetime.datetime.now()
         my_object = DataCollector(
@@ -58,9 +62,14 @@ def pop_up():
             comment=input_text.get("1.0", tk.END).strip(),
             date_time=current_time
         )
+        response = send_data(my_object)
 
-        result.set(str(my_object))
-        top.destroy()
+        if response:
+            status_label.config(text="Succes", bg="green", width=20, height=2)
+        else:
+            status_label.config(text="Eroare", bg="red", width=20, height=2)
+
+        top.after(2000, top.destroy)
 
     def on_close():
         top.destroy()
@@ -90,11 +99,10 @@ def pop_up():
     )
     button_frame.pack(pady=15)
 
-    ok_button.pack(side=tk.LEFT, padx=55,)
+    ok_button.pack(side=tk.LEFT, padx=55)
     close_button.pack(side=tk.LEFT, padx=10)
 
     root.update()
     top.wait_window()
 
-    return result.get()
-
+    return
